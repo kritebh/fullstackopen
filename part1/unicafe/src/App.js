@@ -8,6 +8,16 @@ function App() {
   const [neutral,setNeutral] = useState(0)
 
 
+  const all = () => good+neutral+bad ;
+
+  const average = ()=> {
+    let num = good - bad
+    let den = all()
+    return num&&den?num/den:0 
+  };
+
+  const positive = ()=> good?good/all():0
+
   return (
     <div>
         <h2>give feedback</h2>
@@ -18,6 +28,9 @@ function App() {
         <p>good {good}</p>
         <p>neutral {neutral}</p>
         <p>bad {bad}</p>
+        <p>all {all()}</p>
+        <p>average {average()} </p>
+        <p>positive {positive()}</p>
     </div>
   );
 }
