@@ -8,6 +8,18 @@ const App = () => {
 
   const formHandler = (e)=>{
     e.preventDefault()
+    let allPersons = [...persons]
+    let isPresent = false;
+    allPersons.forEach((p)=>{
+      if(p.name===newName){
+        isPresent = true
+        alert(`${newName} is already to phonebook`)
+      }
+    })
+
+    if(isPresent){
+      return
+    }
     setPersons([...persons,{name:newName}])
   }
 
