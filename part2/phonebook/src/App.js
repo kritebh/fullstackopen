@@ -1,4 +1,8 @@
 import { useState } from 'react'
+import Header from './Components/Header'
+import Search from './Components/Search'
+import AddContact from './Components/AddContact'
+import AllPersons from './Components/AllPersons'
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -45,32 +49,16 @@ const App = () => {
 
   return (
     <div>
-      <h2>Phonebook</h2>
-      <div>
-        filter shown with <input type='text' value={search} onChange={(e)=>searchHandler(e)} ></input>
-      </div>
-      <h2>add a new</h2>
-      <form onSubmit={(e)=>formHandler(e)}>
-        <div>
-          name: <input value={newName} onChange={(e)=>setNewName(e.target.value)} />
-        </div>
-        <div>
-          number: <input value={number} onChange={(e)=>setNumber(e.target.value)} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-      <h2>Numbers</h2>
+      <Header title="Phonebook" />
+      <Search search={search} searchHandler={searchHandler} />
+      <Header title="add a new" />
+      <AddContact formHandler = {formHandler} newName={newName} setNewName={setNewName} number={number} setNumber={setNumber} />
+      <Header title="Numbers" />
       {
-        search && filterPersons.map((person,i)=>{
-          return <p key={i}>{person.name} {person.number}</p>
-        })
+        search && <AllPersons persons={filterPersons}/>
       }
       {
-        !search && persons.map((person,i)=>{
-          return <p key={i}>{person.name} {person.number}</p>
-        })
+        !search && <AllPersons persons={persons} />
       }
     </div>
   )
