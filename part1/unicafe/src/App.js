@@ -2,6 +2,10 @@ import { useState } from "react";
 
 const Statistics = ({good,neutral,bad}) => {
 
+  if(good ===0 && neutral ===0 && bad===0){
+    return <></>
+  }
+
   const all = () => good||neutral||bad?good + neutral + bad:0;
 
   const average = () => {
