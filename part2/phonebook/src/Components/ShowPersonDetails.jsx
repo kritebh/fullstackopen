@@ -1,8 +1,13 @@
 import React from 'react'
 
-function ShowPersonDetails({name,number}) {
+function ShowPersonDetails({name,number,id,deleteContact}) {
   return (
-    <p>{name} {number}</p>
+    <>
+    <span>{name} {number} </span>
+    <button onClick={()=>{deleteContact(id)}}>Delete</button>
+    <br></br>
+    <hr></hr>
+    </>
   )
 }
 

@@ -4,12 +4,10 @@ import Search from './Components/Search'
 import AddContact from './Components/AddContact'
 import AllPersons from './Components/AllPersons'
 import apiService from './services/ApiService'
-import axios from 'axios'
+import axios, { all } from 'axios'
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas',number:'040-123456' },
-  ]) 
+  const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [number,setNumber] = useState('')
   const [search,setSearch] = useState('')
@@ -53,6 +51,26 @@ const App = () => {
 
   }
 
+
+  const findUserById = (id)=>{
+    let allPersons = [...persons]
+    let filterResult =  allPersons.filter(p=> p.id===id)
+    return filterResult[0].name
+  }
+
+  const deleteContact = (id)=>{
+    if(window.confirm(`Delete ${findUserById(id)} ?`)){
+      apiService.deletePhone(id)
+      .then(response=>{
+        if(response.status===200){
+          let allPersons = [...persons]
+          let deletedPersons =  allPersons.filter(person=>person.id!==id)
+          setPersons(deletedPersons)
+        }
+      })
+    }
+  }
+
   useEffect(()=>{
     apiService.getAll()
     .then(data=>{
@@ -68,10 +86,10 @@ const App = () => {
       <AddContact formHandler = {formHandler} newName={newName} setNewName={setNewName} number={number} setNumber={setNumber} />
       <Header title="Numbers" />
       {
-        search && <AllPersons persons={filterPersons}/>
+        search && <AllPersons deleteContact={deleteContact} persons={filterPersons}/>
       }
       {
-        !search && <AllPersons persons={persons} />
+        !search && <AllPersons deleteContact={deleteContact} persons={persons} />
       }
     </div>
   )
