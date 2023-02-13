@@ -17,10 +17,16 @@ const deletePhone = (id)=>{
     return request
 }
 
+const updatePhone = (contact)=>{
+    const request = axios.put(`${baseUrl}/${contact.id}`,contact)
+    return request.then(response=>response.data)
+}
+
 const ApiService =  {
     getAll,
     savePhone,
-    deletePhone
+    deletePhone,
+    updatePhone
 }
 
 export default ApiService
