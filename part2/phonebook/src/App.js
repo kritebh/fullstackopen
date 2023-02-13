@@ -28,9 +28,13 @@ const App = () => {
     if(isPresent){
       return
     }
-    setPersons([...persons,{name:newName,number:number}])
-    setNewName("")
-    setNumber("")
+
+    axios.post("http://localhost:3001/persons",{name:newName,number:number})
+    .then((response) => {
+      setPersons([...persons,response.data])
+      setNewName("")
+      setNumber("")
+  })
   }
 
   const searchHandler = (e)=>{
