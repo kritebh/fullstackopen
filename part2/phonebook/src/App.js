@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 import Header from './Components/Header'
 import Search from './Components/Search'
 import AddContact from './Components/AddContact'
 import AllPersons from './Components/AllPersons'
+import axios from 'axios'
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -46,6 +47,13 @@ const App = () => {
     
 
   }
+
+  useEffect(()=>{
+    axios.get("http://localhost:3001/persons")
+    .then(response=>{
+      setPersons(response.data)
+    })
+  },[])
 
   return (
     <div>
