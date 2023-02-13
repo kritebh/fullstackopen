@@ -3,6 +3,7 @@ import Header from './Components/Header'
 import Search from './Components/Search'
 import AddContact from './Components/AddContact'
 import AllPersons from './Components/AllPersons'
+import apiService from './services/ApiService'
 import axios from 'axios'
 
 const App = () => {
@@ -29,9 +30,9 @@ const App = () => {
       return
     }
 
-    axios.post("http://localhost:3001/persons",{name:newName,number:number})
+    apiService.savePhone({name:newName,number:number})
     .then((response) => {
-      setPersons([...persons,response.data])
+      setPersons([...persons,response])
       setNewName("")
       setNumber("")
   })
@@ -53,9 +54,9 @@ const App = () => {
   }
 
   useEffect(()=>{
-    axios.get("http://localhost:3001/persons")
-    .then(response=>{
-      setPersons(response.data)
+    apiService.getAll()
+    .then(data=>{
+      setPersons(data)
     })
   },[])
 
