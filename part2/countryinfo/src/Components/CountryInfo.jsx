@@ -14,7 +14,7 @@ function CountryInfo({country}) {
                 })
             }
         </ul>
-        <img src={country.flags.png} />
+        <img src={country.flags.png} alt='flag' />
     </div>
   )
 }

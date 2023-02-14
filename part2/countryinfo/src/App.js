@@ -9,7 +9,7 @@ function App() {
   const [allCountryData,setAllCountryData] = useState([]);
   const [filteredResult,setFilteredResult] = useState([]);
   const [input,setInput] = useState("")
-  const [showresult,setShowResult] = useState(false);
+  const [showresult,setShowResult] = useState({show:false,countryInfo:{}});
 
 
 
@@ -19,10 +19,10 @@ function App() {
       })
       setFilteredResult(searchResult)
       if(searchResult.length===1){
-        setShowResult(true)
+        setShowResult({...showresult,show:true,countryInfo:searchResult[0]})
       }
       else{
-        setShowResult(false)
+        setShowResult({...showresult,show:false,countryInfo:[]})
       }
   }
 
@@ -51,10 +51,18 @@ function App() {
       find countries <input type="text" value={input} onChange={(e)=>handleInput(e)} ></input>
       <br></br>
       {
-        (filteredResult.length >10 && input && !showresult) ?`Too many matches, specify another filter`: filteredResult.map((country,i)=><p key={i}>{country.name.common}</p>)
+        (filteredResult.length >10 && input && !showresult.show) ?`Too many matches, specify another filter`
+        : filteredResult.map((country,i)=>{
+          return (
+            <div key={i}>
+              <p>{country.name.common}</p>
+              { filteredResult.length >1 && <button onClick={()=>{ setShowResult({...showresult,show:true,countryInfo:country})}}>show</button>}
+            </div>
+          )
+        })
       }
       {
-        showresult && <CountryInfo country={filteredResult[0]} /> 
+        showresult.show && <CountryInfo country={showresult.countryInfo} /> 
       }
 
     </div>
