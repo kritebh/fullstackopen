@@ -4,7 +4,7 @@ import Search from "./Components/Search";
 import AddContact from "./Components/AddContact";
 import AllPersons from "./Components/AllPersons";
 import apiService from "./services/ApiService";
-import axios, { all } from "axios";
+import Notification from "./Components/Notification"
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -12,6 +12,7 @@ const App = () => {
   const [number, setNumber] = useState("");
   const [search, setSearch] = useState("");
   const [filterPersons, setFilterPersons] = useState([]);
+  const [notify,setNotify] = useState({type:"",message:""});
 
   const formHandler = (e) => {
     e.preventDefault();
@@ -36,6 +37,7 @@ const App = () => {
             setPersons(allPerson);
             setNewName("");
             setNumber("");
+            notifyOnScreen("success",`${newName}'s phone updated successfully`)
           });
         }
       }
@@ -47,10 +49,18 @@ const App = () => {
 
     apiService.savePhone({ name: newName, number: number }).then((response) => {
       setPersons([...persons, response]);
+      notifyOnScreen("success",`Added ${newName}`)
       setNewName("");
       setNumber("");
     });
   };
+
+  const notifyOnScreen = (type,message)=>{
+    setNotify({...notify,type,message})
+    setTimeout(()=>{
+      setNotify({...notify,message:"",type:""})
+    },5000)
+  }
 
   const searchHandler = (e) => {
     let currInput = e.target.value;
@@ -72,14 +82,20 @@ const App = () => {
   };
 
   const deleteContact = (id) => {
-    if (window.confirm(`Delete ${findUserById(id)} ?`)) {
+    let name = findUserById(id)
+    if (window.confirm(`Delete ${name} ?`)) {
       apiService.deletePhone(id).then((response) => {
         if (response.status === 200) {
           let allPersons = [...persons];
           let deletedPersons = allPersons.filter((person) => person.id !== id);
           setPersons(deletedPersons);
+          notifyOnScreen("success",`${name} has been deleted successfully`)
         }
-      });
+      })
+      .catch((error)=>{
+        console.log(error.message)
+        notifyOnScreen("error",`Information of ${name} has already been removed from server`)
+      })
     }
   };
 
@@ -92,6 +108,7 @@ const App = () => {
   return (
     <div>
       <Header title="Phonebook" />
+      {notify.message && <Notification type={notify.type} message={notify.message} />}
       <Search search={search} searchHandler={searchHandler} />
       <Header title="add a new" />
       <AddContact
