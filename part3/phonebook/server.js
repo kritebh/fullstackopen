@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 
-const data = [
+let data = [
     { 
       "id": 1,
       "name": "Arto Hellas", 
@@ -53,5 +53,15 @@ app.get("/api/persons/:id",(req,res)=>{
     }
 
     res.status(404).send(`Data not found`)
+
+})
+
+app.delete("/api/persons/:id",(req,res)=>{
+    let id = Number(req.params.id)
+
+    let filteredData = data.filter((p)=>p.id!==id)
+    console.log(filteredData)
+
+    res.status(204).send('Deleted Successfully')
 
 })
