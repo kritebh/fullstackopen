@@ -1,4 +1,5 @@
-const http = require('http')
+const express = require('express')
+const app = express()
 
 const data = [
     { 
@@ -23,13 +24,19 @@ const data = [
     }
 ]
 
-const app = http.createServer((req,res)=>{
-       res.writeHead(200,{ 'Content-Type': 'text/plain' })
-       res.end(JSON.stringify(data)) 
+const PORT = 3001
+app.listen(PORT,()=>{
+    console.log(`Server is started on port ${PORT}`)
 })
 
-const PORT = 3001
-app.listen(PORT)
 
-console.log(`Server is started on port ${PORT}`)
+app.get("/api/persons",(req,res)=>{
+    res.send(data)
+})
 
+app.get("/api/info",(req,res)=>{
+    let count = data.length
+    let currentTime = new Date()
+
+    res.send(`<p>Phonebook has info for ${count} people </p> <p> ${currentTime} </p>`)
+})
