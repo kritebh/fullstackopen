@@ -85,7 +85,7 @@ const App = () => {
     let name = findUserById(id)
     if (window.confirm(`Delete ${name} ?`)) {
       apiService.deletePhone(id).then((response) => {
-        if (response.status === 200) {
+        if (response.status === 204) {
           let allPersons = [...persons];
           let deletedPersons = allPersons.filter((person) => person.id !== id);
           setPersons(deletedPersons);
