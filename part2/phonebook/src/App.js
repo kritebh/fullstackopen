@@ -27,7 +27,8 @@ const App = () => {
           )
         ) {
           let payload = { ...p, number: number };
-          apiService.updatePhone(payload).then((response) => {
+          apiService.updatePhone(payload)
+          .then((response) => {
             let allPerson = [...persons];
             allPerson.forEach((c) => {
               if (c.id === response.id) {
@@ -38,7 +39,10 @@ const App = () => {
             setNewName("");
             setNumber("");
             notifyOnScreen("success",`${newName}'s phone updated successfully`)
-          });
+          })
+          .catch((error)=>{
+            notifyOnScreen('error',error.response.data.error)
+          })
         }
       }
     });
@@ -47,12 +51,16 @@ const App = () => {
       return;
     }
 
-    apiService.savePhone({ name: newName, number: number }).then((response) => {
+    apiService.savePhone({ name: newName, number: number })
+    .then((response) => {
       setPersons([...persons, response]);
       notifyOnScreen("success",`Added ${newName}`)
       setNewName("");
       setNumber("");
-    });
+    })
+    .catch((error)=>{
+      notifyOnScreen('error',error.response.data.error)
+    })
   };
 
   const notifyOnScreen = (type,message)=>{
