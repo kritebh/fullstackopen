@@ -60,7 +60,7 @@ app.get("/api/persons/:id",(req,res,next)=>{
 app.put("/api/persons/:id",(req,res,next)=>{
     let id = req.params.id
     let payload = req.body
-    phoneBookModel.findOneAndUpdate({_id:id},payload,{new:true}).then((data)=>{
+    phoneBookModel.findOneAndUpdate({_id:id},payload,{new:true,runValidators:true,context:'query'}).then((data)=>{
         console.log(data)
         res.send(data)
     })
@@ -81,15 +81,20 @@ app.delete("/api/persons/:id",(req,res)=>{
 
 })
 
-app.post("/api/persons",async(req,res)=>{
+app.post("/api/persons",(req,res,next)=>{
     const person = req.body
 
     if(!req.body.name || !req.body.number){
         return res.status(400).send({error:"Invalid Input"})
     }
     
-    let newPerson = await phoneBookModel.create(person)
-    res.send(newPerson)
+    phoneBookModel.create(person)
+    .then((newPerson)=>{
+        res.send(newPerson)
+    })
+    .catch((error)=>{
+        next(error)
+    })
 
 })
 
@@ -99,6 +104,9 @@ const errorHandler = (error,req,res,next)=>{
     console.log(error.name)
     if(error.name==='CastError'){
         return res.status(400).send({error:"malformatted id"})
+    }
+    else if(error.name==='ValidationError'){
+        return res.status(400).send({error:error.message})
     }
     next(error)
 }
