@@ -12,7 +12,7 @@ beforeEach(async()=>{
 })
 
 describe('basicDBTest', () => {
-    test('empty notes',async ()=>{
+    test('empty blogs',async ()=>{
         let res = await api
         .get('/api/blogs')
         .expect(200)
@@ -94,9 +94,38 @@ describe('DELETE req', () => {
         await api.delete(`/api/blogs/${invalidID}`).expect(400)
     })
 
-    test('deleting note with ID which is not in DB',async()=>{
+    test('deleting blog with ID which is not in DB',async()=>{
         let nonExistingId = await helper.nonExistingId()
         await api.delete(`/api/blogs/${nonExistingId}`).expect(404)
     })
 
+});
+
+describe('PUT req', () => {
+    test('updating a blog',async()=>{
+        let allBlogsInDB = await helper.blogInDB()
+        let blogToUpdate = allBlogsInDB[0];
+        blogToUpdate.likes = 7657691;
+
+        let updatedBlog = await api.put(`/api/blogs/${blogToUpdate.id}`).send(blogToUpdate)
+
+        expect(blogToUpdate).toEqual(updatedBlog.body)
+
+    })
+
+    test('updating blogs with invalid ID',async ()=>{
+        let invalidID = "5a3d5da59070081a82a3445"
+        let allBlogsInDB = await helper.blogInDB()
+        let blogToUpdate = allBlogsInDB[0];
+        blogToUpdate.likes = 76571;
+        await api.put(`/api/blogs/${invalidID}`).send(blogToUpdate).expect(400)
+    })
+
+    test('updating blog with ID which is not in DB',async()=>{
+        let nonExistingId = await helper.nonExistingId()
+        let allBlogsInDB = await helper.blogInDB()
+        let blogToUpdate = allBlogsInDB[0];
+        blogToUpdate.likes = 76576921;
+        await api.put(`/api/blogs/${nonExistingId}`).send(blogToUpdate).expect(404)
+    })
 });
