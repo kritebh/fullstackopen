@@ -8,6 +8,11 @@ test('empty notes',async ()=>{
     .get('/api/blogs')
     .expect(200)
     .expect('Content-Type', /application\/json/)
-    console.log(res)
-    expect(res.body).toHaveLength(0)
+    expect(res.body).toHaveLength(1)
+})
+
+test('check id',async()=>{
+    let res = await api.get('/api/blogs')
+    console.log(res.body)
+    expect(res.body[0].id).toBeDefined()
 })
