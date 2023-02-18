@@ -38,3 +38,14 @@ test('checking add blog',async()=>{
     let allBlog = await helper.blogInDB()
     expect(allBlog.length === helper.initialBlog.length+1)
 })
+
+test("likes default 0",async()=>{
+    let payload = {
+        title: "Type wars",
+        author: "Robert C. Martin",
+        url: "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html",
+    }
+    
+    let res = await api.post('/api/blogs').send(payload)
+    expect(res.body.likes).toBe(0)
+})
