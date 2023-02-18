@@ -1,0 +1,13 @@
+POST http://localhost:5000/api/blogs
+Content-Type: application/json
+
+{
+    "title":"Zero To One",
+    "author":"Peter",
+    "url":"http://localhost:5000",
+    "likes":"2313"
+}
+
+###
+
+GET http://localhost:5000/api/blogs
