@@ -16,13 +16,14 @@
     "cross-env": "^7.0.3",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
-    "mongoose": "^6.9.2"
+    "mongoose": "^6.9.2",
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
     "jest": "^29.4.3",
     "supertest": "^6.3.3"
   },
-  "jest":{
+  "jest": {
     "testEnvironment": "node",
     "globalTeardown": "./tests/teardown.js"
   }

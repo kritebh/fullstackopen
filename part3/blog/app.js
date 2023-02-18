@@ -4,6 +4,7 @@ const app = express()
 const cors = require('cors')
 const {info,error} = require("./utils/logger")
 const blogRouter = require("./controllers/blog")
+const morgan = require("morgan")
 
 //Database
 const mongoose = require('mongoose')
@@ -17,6 +18,14 @@ mongoose.connect(config.MONGODB_URI,()=>{
 //Middleware
 app.use(cors())
 app.use(express.json())
+morgan.token("payload", (req, res) =>
+	req.method === "POST" ? JSON.stringify(req.body) : null
+);
+app.use(
+	morgan(
+		":method :url :status :res[content-length] - :response-time ms :payload"
+	)
+);
 
 //Route
 app.use("/api/blogs",blogRouter)
