@@ -93,4 +93,13 @@ describe("favourite Blog", () => {
       __v: 0,
     });
   });
+
+  test("most blog by author",()=>{
+    const res = listHelper.mostBlogs(blogs)
+    expect(res).toEqual({
+        author: "Robert C. Martin",
+        blogs: 3
+      })
+  })
+
 });
