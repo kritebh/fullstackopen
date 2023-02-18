@@ -49,3 +49,22 @@ test("likes default 0",async()=>{
     let res = await api.post('/api/blogs').send(payload)
     expect(res.body.likes).toBe(0)
 })
+
+test('checking title or url in payload',async()=>{
+    let payload = {
+        author: "Robert C. Martin",
+        url: "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html",
+        likes: 2,
+    }
+
+    await api.post("/api/blogs").send(payload).expect(400)
+
+    payload = {
+        title: "Type wars",
+        author: "Robert C. Martin",
+        likes: 2,
+    }
+
+    await api.post("/api/blogs").send(payload).expect(400)
+
+})
