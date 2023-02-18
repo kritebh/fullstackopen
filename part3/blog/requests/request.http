@@ -2,10 +2,10 @@ POST http://localhost:5000/api/blogs
 Content-Type: application/json
 
 {
-    "title":"Zero To One",
-    "author":"Peter",
+    "title":"A Brief History of Time",
+    "author":"Stephen Hawking",
     "url":"http://localhost:5000",
-    "likes":"2313"
+    "likes":"1300"
 }
 
 ###
