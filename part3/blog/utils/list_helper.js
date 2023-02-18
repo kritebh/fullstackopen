@@ -45,9 +45,40 @@ const mostBlogs = (blogs) => {
   return most;
 };
 
+
+const mostLikes = (blogs)=>{
+    let allAuthAndLike = blogs.reduce((acc,curr)=>{
+          
+        if(acc[curr.author]){
+            acc[curr.author] += curr.likes 
+        }   
+        else{
+            acc[curr.author] = curr.likes
+        }
+
+        return acc
+    },{})
+
+
+    let res = {
+        author:"",
+        likes:0
+    }
+
+    for(author in allAuthAndLike){
+        if(allAuthAndLike[author]>res.likes){
+            res.author = author
+            res.likes = allAuthAndLike[author]
+        }
+    }
+
+    return res
+}
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
   mostBlogs,
+  mostLikes
 };
