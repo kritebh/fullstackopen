@@ -8,7 +8,9 @@ const errorHandler = (error, request, response, next) => {
     } else if (error.name === 'ValidationError') {
       return response.status(400).json({ error: error.message })
     }
-  
+    else if(error.code===11000){
+      return response.status(400).send({error:"user already exist"})
+    }
     next(error)
   }
 
