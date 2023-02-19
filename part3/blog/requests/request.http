@@ -12,9 +12,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFsd
 ###
 
 GET http://localhost:5000/api/blogs
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFsdG8iLCJpZCI6IjYzZjFhZWRhMWJlMjAyNmFlMzY4Njk5YiIsImlhdCI6MTY3NjgwODQ2MH0.3TYMhGqvRiDAOXIL0ZJ8lUr-6sjWEVHeltOiVmhVZbM
+
 
 ###
-DELETE http://localhost:5000/api/blogs/63f20ec9525bc6eaf6a0ee45
+DELETE http://localhost:5000/api/blogs/63f219f25f6ed752bbf0117e
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFsdG8iLCJpZCI6IjYzZjFhZWRhMWJlMjAyNmFlMzY4Njk5YiIsImlhdCI6MTY3NjgwODQ2MH0.3TYMhGqvRiDAOXIL0ZJ8lUr-6sjWEVHeltOiVmhVZbM
 
 
