@@ -1,5 +1,6 @@
 POST http://localhost:5000/api/blogs
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUz8iLCJpZCI6IjYzZjFhZWRhMWJlMjAyNmFlMzY4Njk5YiIsImlhdCI6MTY3NjgwNzc4MX0.bZLzzI5CG9Yr6L16DaLwRZz-_QHE-nB-6EP-rGjRpsw
 
 {
     "title":"A Brief History of Time",

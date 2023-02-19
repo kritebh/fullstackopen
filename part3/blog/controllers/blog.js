@@ -1,6 +1,8 @@
 const blogRouter = require("express").Router();
+const jwt = require("jsonwebtoken");
 const Blog = require("../models/blog");
-const {info,error} = require("../utils/logger")
+const {info,error} = require("../utils/logger");
+const User = require("../models/user");
 
 blogRouter.get("/", async (request, response) => {
   let blogs = await Blog.find({}).populate('user',{username:1,name:1})
@@ -9,14 +11,45 @@ blogRouter.get("/", async (request, response) => {
 
 blogRouter.post("/", async (request, response) => {
 
-  if(!request.body.url || !request.body.title){
-    return response.status(400).send();
+  let authorization = request.get('authorization')
+  let token = null
+  if(authorization && authorization.startsWith('Bearer ')){
+     token = authorization.replace('Bearer ','') 
   }
 
-  const blog = new Blog(request.body);
+  if(!token){
+    return response.status(401).send({ error: 'unauthorized' })
+  }
+  let userInfo;
+  try{
+    userInfo = jwt.verify(token,process.env.SECRET)
+  }
+  catch(err){
+    error(err)
+    return response.status(401).send({ error: 'invalid token' })
+  }
 
-  let result = await blog.save()
-  response.status(201).json(result);
+  let user = await User.findOne({_id:userInfo.id})
+
+  if(!user){
+    return response.status(401).send({error:'invalid user'})
+  }
+
+  if(!request.body.url || !request.body.title){
+    return response.status(400).send({error:"url and title is required field"});
+  }
+
+  let payload = {
+    ...request.body,
+    user:user._id
+  }
+
+  const blog = await Blog.create(payload);
+  info(user)
+  user.blogs.push(blog._id)
+  await User.updateOne({_id:user._id},user)
+
+  response.status(201).json(blog);
 });
 
 
