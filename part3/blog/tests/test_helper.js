@@ -8,6 +8,7 @@ const initialBlog = [
     author: "Michael Chan",
     url: "https://reactpatterns.com/",
     likes: 7,
+    user:"63f1b89e6241755fdc3132a6",
     __v: 0,
   },
   {
@@ -16,6 +17,7 @@ const initialBlog = [
     author: "Edsger W. Dijkstra",
     url: "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
     likes: 5,
+    user:"63f1b89e6241755fdc3132a6",
     __v: 0,
   },
 ];
@@ -31,6 +33,7 @@ const nonExistingId = async () => {
     author: "Robert C. Martin",
     url: "http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html",
     likes: 0,
+    user:"63f1b89e6241755fdc3132a6"
   });
   await blog.save();
   await blog.delete();
@@ -56,11 +59,16 @@ const allUsersInDB = async()=>{
   return allUser
 }
 
+const validToken = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWQiOiI2M2YxYjg5ZTYyNDE3NTVmZGMzMTMyYTYiLCJpYXQiOjE2NzY4MTQ4Mzh9.7Q4NCTd867cPEEJoG8yoWmtmQhJG48X-6HqmWBTOEyc"
+const invalidToken = "ghjuvjhgv.ghugyvuvbuyy.uyvuyvu"
+
 module.exports = {
   initialBlog,
   blogInDB,
   nonExistingId,
   sampleUser,
   allUsersInDB,
-  initialUser
+  initialUser,
+  validToken,
+  invalidToken
 };

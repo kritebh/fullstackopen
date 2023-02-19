@@ -43,14 +43,11 @@ blogRouter.delete("/:id",async (req,res,next)=>{
       let user = req.user
     
       let blogToDelete = await Blog.findOne({_id:req.params.id})
-      info(blogToDelete)
+      if(!blogToDelete){
+        return res.status(404).send()
+      }
       if(blogToDelete.user._id.toString()===user._id.toString()){
-
-        
-        let resp = await Blog.findOneAndDelete({_id:req.params.id})
-        if(!resp){
-          return res.status(404).send()
-        }
+        await Blog.findOneAndDelete({_id:req.params.id})
         res.status(204).send()
       }
       else{
