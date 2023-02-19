@@ -1,13 +1,13 @@
-const notesRouter = require("express").Router();
+const blogRouter = require("express").Router();
 const Blog = require("../models/blog");
 const {info,error} = require("../utils/logger")
 
-notesRouter.get("/", async (request, response) => {
-  let blogs = await Blog.find({})
+blogRouter.get("/", async (request, response) => {
+  let blogs = await Blog.find({}).populate('user',{username:1,name:1})
   response.json(blogs);
 });
 
-notesRouter.post("/", async (request, response) => {
+blogRouter.post("/", async (request, response) => {
 
   if(!request.body.url || !request.body.title){
     return response.status(400).send();
@@ -20,7 +20,7 @@ notesRouter.post("/", async (request, response) => {
 });
 
 
-notesRouter.delete("/:id",async (req,res,next)=>{
+blogRouter.delete("/:id",async (req,res,next)=>{
     try{
       let resp = await Blog.findOneAndDelete({_id:req.params.id})
       if(!resp){
@@ -34,7 +34,7 @@ notesRouter.delete("/:id",async (req,res,next)=>{
     }
 })
 
-notesRouter.put("/:id",async(req,res,next)=>{
+blogRouter.put("/:id",async(req,res,next)=>{
     try{
       let payload = req.body
       let newBlog = await Blog.findOneAndUpdate({_id:req.params.id},payload,{new:true})
@@ -49,4 +49,4 @@ notesRouter.put("/:id",async(req,res,next)=>{
     }
 })
 
-module.exports = notesRouter
+module.exports = blogRouter
