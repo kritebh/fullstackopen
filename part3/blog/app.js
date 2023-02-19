@@ -7,6 +7,7 @@ const blogRouter = require("./controllers/blog")
 const morgan = require("morgan")
 const middleware = require("./utils/middleware")
 const userRouter = require("./controllers/user")
+const loginRouter = require("./controllers/login")
 //Database
 const mongoose = require('mongoose')
 mongoose.set('strictQuery',false)
@@ -31,5 +32,6 @@ app.use(
 //Route
 app.use("/api/blogs",blogRouter)
 app.use("/api/users",userRouter)
+app.use("/api/login",loginRouter)
 app.use(middleware.errorHandler)
 module.exports = app
