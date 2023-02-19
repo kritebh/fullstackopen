@@ -49,11 +49,38 @@ blogRouter.post("/", async (request, response) => {
 
 blogRouter.delete("/:id",async (req,res,next)=>{
     try{
-      let resp = await Blog.findOneAndDelete({_id:req.params.id})
-      if(!resp){
-        return res.status(404).send()
+      if(!req.token){
+        return res.status(401).send({ error: 'unauthorized' })
       }
-      res.status(204).send()
+      let userInfo;
+      try{
+        userInfo = jwt.verify(req.token,process.env.SECRET)
+      }
+      catch(err){
+        error(err)
+        return res.status(401).send({ error: 'invalid token' })
+      }
+    
+      let user = await User.findOne({_id:userInfo.id})
+    
+      if(!user){
+        return res.status(401).send({error:'invalid user'})
+      }
+
+      let blogToDelete = await Blog.findOne({_id:req.params.id})
+      info(blogToDelete)
+      if(blogToDelete.user._id.toString()===user._id.toString()){
+
+        
+        let resp = await Blog.findOneAndDelete({_id:req.params.id})
+        if(!resp){
+          return res.status(404).send()
+        }
+        res.status(204).send()
+      }
+      else{
+        res.status(401).send({error:"You are not authorized to delete this blog"})
+      }
     }
     catch(err){
       error(err)
