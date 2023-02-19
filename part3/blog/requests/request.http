@@ -1,12 +1,12 @@
 POST http://localhost:5000/api/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUz8iLCJpZCI6IjYzZjFhZWRhMWJlMjAyNmFlMzY4Njk5YiIsImlhdCI6MTY3NjgwNzc4MX0.bZLzzI5CG9Yr6L16DaLwRZz-_QHE-nB-6EP-rGjRpsw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFsdG8iLCJpZCI6IjYzZjFhZWRhMWJlMjAyNmFlMzY4Njk5YiIsImlhdCI6MTY3NjgwODQ2MH0.3TYMhGqvRiDAOXIL0ZJ8lUr-6sjWEVHeltOiVmhVZbM
 
 {
     "title":"A Brief History of Time",
     "author":"Stephen Hawking",
     "url":"http://localhost:5000",
-    "likes":"1300"
+    "likes":"1800"
 }
 
 ###

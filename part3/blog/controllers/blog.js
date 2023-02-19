@@ -11,18 +11,13 @@ blogRouter.get("/", async (request, response) => {
 
 blogRouter.post("/", async (request, response) => {
 
-  let authorization = request.get('authorization')
-  let token = null
-  if(authorization && authorization.startsWith('Bearer ')){
-     token = authorization.replace('Bearer ','') 
-  }
 
-  if(!token){
+  if(!request.token){
     return response.status(401).send({ error: 'unauthorized' })
   }
   let userInfo;
   try{
-    userInfo = jwt.verify(token,process.env.SECRET)
+    userInfo = jwt.verify(request.token,process.env.SECRET)
   }
   catch(err){
     error(err)
@@ -45,7 +40,6 @@ blogRouter.post("/", async (request, response) => {
   }
 
   const blog = await Blog.create(payload);
-  info(user)
   user.blogs.push(blog._id)
   await User.updateOne({_id:user._id},user)
 

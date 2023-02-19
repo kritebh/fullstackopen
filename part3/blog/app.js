@@ -28,6 +28,7 @@ app.use(
 		":method :url :status :res[content-length] - :response-time ms :payload"
 	)
 );
+app.use(middleware.tokenExtractor)
 
 //Route
 app.use("/api/blogs",blogRouter)
