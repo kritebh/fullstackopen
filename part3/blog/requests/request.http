@@ -11,3 +11,17 @@ Content-Type: application/json
 ###
 
 GET http://localhost:5000/api/blogs
+
+###
+
+POST http://localhost:5000/api/users
+Content-Type: application/json
+
+{
+    "username":"alto",
+    "name":"Alto Haltman",
+    "password":"altoCapHaltman"
+}
+
+###
+GET http://localhost:5000/api/users
