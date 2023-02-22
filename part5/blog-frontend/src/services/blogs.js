@@ -17,5 +17,15 @@ const login = (username,password)=>{
     return request.then(response=>response.data)
 }
 
+const addNew = async (payload,token)=>{
+  let config = {
+    headers:{
+      "Authorization":`Bearer ${token}`
+    }
+  }
+  const request = await axios.post(`${baseUrl}/blogs`,payload,config)
+  return request.data
+}
+
 // eslint-disable-next-line import/no-anonymous-default-export
-export default { getAll,login }
+export default { getAll,login,addNew }

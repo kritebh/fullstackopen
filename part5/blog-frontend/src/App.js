@@ -1,24 +1,28 @@
 import { useState, useEffect } from "react";
 import Blog from "./components/Blog";
 import blogService from "./services/blogs";
+import AddBlog from "./components/AddBlog";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
   const [loginFormData, setLoginFormData] = useState({});
+  const [newBlogData,setNewBlogData] = useState({})
 
-  useEffect(() => {
-    if(user){
-      blogService.getAll(user?.token).then((blogs) => setBlogs(blogs));
-    }
-  }, [user]);
-  
   useEffect(()=>{
     let userDetails = localStorage.getItem('user')
     if(userDetails){
       setUser(JSON.parse(userDetails))
     }
   },[])
+
+
+  useEffect(() => {
+    if(user){
+      blogService.getAll(user?.token).then((blogs) => {console.log(blogs); setBlogs(blogs)});
+    }
+  }, [user]);
+  
 
   const loginFormHandler = async (event) => {
     event.preventDefault();
@@ -30,6 +34,13 @@ const App = () => {
     setUser(userDetails);
     setLoginFormData({});
   };
+
+  const newBlogFormHandler = async(event)=>{
+    event.preventDefault()
+    let newBlog = await blogService.addNew(newBlogData,user.token)
+    console.log(newBlog)
+    setBlogs([...blogs,newBlog])
+  }
 
   const logout = ()=>{
     localStorage.clear()
@@ -78,8 +89,9 @@ const App = () => {
       <h2>blogs</h2>
       <p>
       {user.name} logged in
-      <button onClick={logout}>logout</button>
       </p>
+      <button onClick={logout}>logout</button>
+      <AddBlog newBlogData={newBlogData} setNewBlogData={setNewBlogData} newBlogFormHandler={newBlogFormHandler} />
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />
       ))}
