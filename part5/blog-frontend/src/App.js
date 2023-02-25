@@ -3,12 +3,13 @@ import Blog from "./components/Blog";
 import blogService from "./services/blogs";
 import AddBlog from "./components/AddBlog";
 import Notification from "./components/Notification"
+import Togglable from "./components/Togglable";
+import sort from "./utils/sortBlog"
 import "./App.css"
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
   const [loginFormData, setLoginFormData] = useState({});
-  const [newBlogData,setNewBlogData] = useState({})
   const [showNotification,setShowNotification] = useState({type:"",message:""})
 
   useEffect(()=>{
@@ -21,7 +22,10 @@ const App = () => {
 
   useEffect(() => {
     if(user){
-      blogService.getAll(user?.token).then((blogs) => setBlogs(blogs));
+      blogService.getAll(user?.token).then((blogs) => {
+        sort(blogs)
+        setBlogs(blogs)
+      });
     }
   }, [user]);
   
@@ -44,13 +48,36 @@ const App = () => {
     }
   };
 
-  const newBlogFormHandler = async(event)=>{
-    event.preventDefault()
-    let newBlog = await blogService.addNew(newBlogData,user.token)
+  const newBlogFormHandler = async(formData)=>{
+    let newBlog = await blogService.addNew(formData,user.token)
     setBlogs([...blogs,newBlog])
     notify("success",`${newBlog.title} by ${newBlog.author} added`)
-    event.target.reset()
-    setNewBlogData({})
+  }
+
+
+  const updateLike = async (blogToBeUpdate)=>{
+    let res = await blogService.updateBlog(blogToBeUpdate,user.token)
+    let allBlogs = [...blogs];
+    allBlogs.forEach((b)=>{
+      if(b.id===res.id){
+        b.likes = res.likes
+      }
+    })
+    sort(allBlogs)
+    setBlogs(allBlogs)
+  }
+
+  const deleteBlog = async(blogToDelete)=>{
+    if(window.confirm(`Remove blog ${blogToDelete.title} by ${blogToDelete.author}`)){
+      let res = await blogService.deleteBlog(blogToDelete.id,user.token)
+      if(res.status===204){
+        let allBlogs = [...blogs]
+        allBlogs = allBlogs.filter(d=>{
+          return d.id!==blogToDelete.id
+        })
+        setBlogs(allBlogs)
+      }
+    }
   }
 
   const logout = ()=>{
@@ -110,10 +137,14 @@ const App = () => {
       {user.name} logged in
       </p>
       {showNotification.message && <Notification notification={showNotification}/>}
-      <button onClick={logout}>logout</button>
-      <AddBlog newBlogData={newBlogData} setNewBlogData={setNewBlogData} newBlogFormHandler={newBlogFormHandler} />
+      <button onClick={logout}>logout</button><br/><br/>
+    <Togglable buttonLabel='create new'>
+      <AddBlog 
+      newBlogFormHandler={newBlogFormHandler}  
+      />
+    </Togglable>
       {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} updateLike={updateLike} deleteBlog={deleteBlog} />
       ))}
     </div>
   );

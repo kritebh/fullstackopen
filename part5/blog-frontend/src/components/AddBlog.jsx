@@ -1,10 +1,20 @@
-import React from "react";
+import React,{useState} from "react";
 
-function AddBlog({newBlogData,setNewBlogData,newBlogFormHandler}) {
+function AddBlog({newBlogFormHandler}) {
+
+  const [newBlogData,setNewBlogData] = useState({})
+
+  const addBlog = (event)=>{
+    event.preventDefault();
+    newBlogFormHandler(newBlogData);
+    event.target.reset()
+    setNewBlogData({})
+  }
+
   return (
     <div>
       <h2>create new</h2>
-      <form onSubmit={newBlogFormHandler}>
+      <form onSubmit={addBlog}>
         <div>
         title: <input type="text" onChange={(e)=>setNewBlogData({...newBlogData,title:e.target.value})}/>
         </div>
@@ -18,6 +28,7 @@ function AddBlog({newBlogData,setNewBlogData,newBlogFormHandler}) {
         <button type="submit">create</button>
         </div>
       </form>
+      <br/>
     </div>
   );
 }

@@ -27,5 +27,26 @@ const addNew = async (payload,token)=>{
   return request.data
 }
 
+const updateBlog = async(payload,token)=>{
+  let config = {
+    headers:{
+      "Authorization":`Bearer ${token}`
+    }
+  }
+  const request = await axios.put(`${baseUrl}/blogs/${payload.id}`,payload,config)
+  return request.data
+}
+
+
+const deleteBlog = async(id,token)=>{
+  let config = {
+    headers:{
+      "Authorization":`Bearer ${token}`
+    }
+  }
+  const request = await axios.delete(`${baseUrl}/blogs/${id}`,config)
+  return request
+}
+
 // eslint-disable-next-line import/no-anonymous-default-export
-export default { getAll,login,addNew }
+export default { getAll,login,addNew, updateBlog,deleteBlog }

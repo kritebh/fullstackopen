@@ -20,7 +20,7 @@ loginRouter.post('/',async(req,res,next)=>{
         id:user._id
     }
 
-    let token = jwt.sign(userForToken,process.env.SECRET)
+    let token = jwt.sign(userForToken,process.env.SECRET) //TODO: add expiry of token
 
     res.send({token,username:user.username,name:user.name})
 
