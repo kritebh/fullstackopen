@@ -1,11 +1,11 @@
-import React from 'react'
-
-function Notification({notification:{type,message}}) {
-  return (
-    <div className={`notify ${type}` }>
-        {message}
-    </div>
-  )
+import React from "react";
+import PropTypes from "prop-types";
+function Notification({ notification: { type, message } }) {
+  return <div className={`notify ${type}`}>{message}</div>;
 }
 
-export default Notification
+Notification.propTypes = {
+  notification: PropTypes.object.isRequired,
+};
+
+export default Notification;
